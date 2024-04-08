@@ -1,10 +1,8 @@
 import serial
-import time
 
 # Replace 'COM2' with your serial port name
-serial_port = 'COM14'
+serial_port = 'COM2'
 baud_rate = 9600
-# parity = serial.PARITY_ODD
 parity = serial.PARITY_NONE
 stop_bits = serial.STOPBITS_ONE
 bytesize = serial.EIGHTBITS
@@ -17,13 +15,12 @@ def main():
                             parity=parity, 
                             stopbits=stop_bits, 
                             bytesize=bytesize,
-                            timeout=1)
-        # Receive 100000 Byte
-        data_cnter = [0] * 256
-        for i in range(1000):
-            rx_data = int.from_bytes(ser.read())
-            data_cnter[rx_data] += 1
-        print(data_cnter)
+                            timeout=None)
+        # Receive 100 Byte
+        for i in range(100):
+            rx_data1 = int.from_bytes(ser.read()) #Receive High Bytes;
+            rx_data2 = int.from_bytes(ser.read()) #Receive Low  Bytes;
+            print("RX:",rx_data1 * 256 + rx_data2)
         
     except serial.SerialException as e:
         print(f"Error opening the serial port: {e}")
